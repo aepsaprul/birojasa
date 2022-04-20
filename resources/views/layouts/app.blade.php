@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('public/themes/dist/img/logo-daun.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ asset('public/assets/logo.png') }}" rel="icon" type="image/x-icon">
     <title>{{ config('app.name', 'HO') }}</title>
 
     <!-- CSRF Token -->
@@ -146,24 +146,24 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link {{ request()->is('master/nav') ? 'active' : '' }}">
+                                        <a href="{{ route('nav.index') }}" class="nav-link {{ request()->is('master/nav') ? 'active' : '' }}">
                                             <i class="fas fa-angle-right nav-icon"></i><p>Navigasi</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link {{ request()->is('master/user') ? 'active' : '' }}">
+                                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('master/user') ? 'active' : '' }}">
                                             <i class="fas fa-angle-right nav-icon"></i><p>User</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link {{ request()->is('master/jabatan') ? 'active' : '' }}">
+                                        <a href="{{ route('jabatan.index') }}" class="nav-link {{ request()->is('master/jabatan') ? 'active' : '' }}">
                                             <i class="fas fa-angle-right nav-icon"></i><p>Jabatan</p>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link {{ request()->is(['karyawan', 'karyawan/*']) ? 'active' : '' }}">
+                                <a href="{{ route('karyawan.index') }}" class="nav-link {{ request()->is(['karyawan', 'karyawan/*']) ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user-tie text-center mr-2" style="width: 30px;"></i><p>Karyawan</p>
                                 </a>
                             </li>
