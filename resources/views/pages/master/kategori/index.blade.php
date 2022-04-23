@@ -18,12 +18,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pelanggan</h1>
+                    <h1>Kategori</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Pelanggan</li>
+                        <li class="breadcrumb-item active">Kategori</li>
                     </ol>
                 </div>
             </div>
@@ -49,21 +49,17 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center text-indigo">No</th>
-                                        <th class="text-center text-indigo">Nama Pelanggan</th>
-                                        <th class="text-center text-indigo">Telepon</th>
-                                        <th class="text-center text-indigo">Email</th>
-                                        <th class="text-center text-indigo">Alamat</th>
+                                        <th class="text-center text-indigo">Nama Kategori</th>
+                                        <th class="text-center text-indigo">Persayaratan</th>
                                         <th class="text-center text-indigo">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pelanggans as $key => $item)
+                                    @foreach ($kategoris as $key => $item)
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->nama }}</td>
-                                            <td class="text-center">{{ $item->telepon }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->alamat }}</td>
+                                            <td>{{ $item->persyaratan }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -108,7 +104,7 @@
         <div class="modal-content">
             <form id="form" class="form-create">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Data Pelanggan</h4>
+                    <h4 class="modal-title">Tambah Data Kategori</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -119,20 +115,12 @@
                     <input type="hidden" name="id" id="id">
 
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama Pelanggan</label>
-                        <input type="text" class="form-control form-control-sm" id="nama" name="nama" maxlength="30" required>
+                        <label for="nama" class="form-label">Nama Kategori</label>
+                        <input type="text" class="form-control form-control-sm" id="nama" name="nama" maxlength="50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="telepon" class="form-label">Telepon</label>
-                        <input type="text" class="form-control form-control-sm" id="telepon" name="telepon" maxlength="15" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control form-control-sm" id="email" name="email" maxlength="50" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control"></textarea>
+                        <label for="persyaratan" class="form-label">Persyaratan</label>
+                        <textarea name="persyaratan" id="persyaratan" cols="30" rows="6" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -210,6 +198,7 @@ $(document).ready(function () {
         timer: 3000
     });
 
+    // create
     $('#btn-create').on('click', function() {
         $('.modal-form').modal('show');
     });
@@ -224,7 +213,7 @@ $(document).ready(function () {
         var formData = new FormData($('#form')[0]);
 
         $.ajax({
-            url: "{{ URL::route('pelanggan.store') }}",
+            url: "{{ URL::route('kategori.store') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -261,7 +250,7 @@ $(document).ready(function () {
         $('.modal-btn').empty();
 
         var id = $(this).attr('data-id');
-        var url = '{{ route("pelanggan.edit", ":id") }}';
+        var url = '{{ route("kategori.edit", ":id") }}';
         url = url.replace(':id', id);
 
         var formData = {
@@ -278,11 +267,9 @@ $(document).ready(function () {
                 $('.modal-title').append("Ubah Data Pelanggan")
                 $('.modal-btn').append("Perbaharui");
 
-                $('#id').val(response.pelanggan.id);
-                $('#nama').val(response.pelanggan.nama);
-                $('#telepon').val(response.pelanggan.telepon);
-                $('#email').val(response.pelanggan.email);
-                $('#alamat').val(response.pelanggan.alamat);
+                $('#id').val(response.kategori.id);
+                $('#nama').val(response.kategori.nama);
+                $('#persyaratan').val(response.kategori.persyaratan);
 
                 $('.modal-form').modal('show');
             }
@@ -295,7 +282,7 @@ $(document).ready(function () {
         var formData = new FormData($('#form')[0]);
 
         $.ajax({
-            url: "{{ URL::route('pelanggan.update') }}",
+            url: "{{ URL::route('kategori.update') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -330,7 +317,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var id = $(this).attr('data-id');
-        var url = '{{ route("pelanggan.delete_btn", ":id") }}';
+        var url = '{{ route("kategori.delete_btn", ":id") }}';
         url = url.replace(':id', id);
 
         var formData = {
@@ -356,7 +343,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: '{{ URL::route('pelanggan.delete') }}',
+            url: "{{ URL::route('kategori.delete') }}",
             type: 'POST',
             data: formData,
             beforeSend: function () {

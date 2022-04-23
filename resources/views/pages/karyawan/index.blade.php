@@ -41,15 +41,15 @@
                         </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-                                <thead class="bg-info">
+                                <thead>
                                     <tr>
-                                        <th class="text-center text-light">No</th>
-                                        <th class="text-center text-light">Nama</th>
-                                        <th class="text-center text-light">Email</th>
-                                        <th class="text-center text-light">Telepon</th>
-                                        <th class="text-center text-light">Jabatan</th>
-                                        <th class="text-center text-light">Status</th>
-                                        <th class="text-center text-light">Aksi</th>
+                                        <th class="text-center text-indigo">No</th>
+                                        <th class="text-center text-indigo">Nama</th>
+                                        <th class="text-center text-indigo">Email</th>
+                                        <th class="text-center text-indigo">Telepon</th>
+                                        <th class="text-center text-indigo">Jabatan</th>
+                                        <th class="text-center text-indigo">Status</th>
+                                        <th class="text-center text-indigo">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>

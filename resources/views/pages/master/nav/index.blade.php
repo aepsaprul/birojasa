@@ -117,6 +117,7 @@
                                                         <th class="text-center text-indigo">link</th>
                                                         <th class="text-center text-indigo">Icon</th>
                                                         <th class="text-center text-indigo">Aktif</th>
+                                                        <th class="text-center text-indigo">Hirarki</th>
                                                         <th class="text-center text-indigo">Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -127,7 +128,8 @@
                                                         <td class="main_title_{{ $item->id }}">{{ $item->title }}</td>
                                                         <td class="main_link_{{ $item->id }}">{{ $item->link }}</td>
                                                         <td class="main_icon_{{ $item->id }}">{{ $item->icon }}</td>
-                                                        <td class="main_aktif_{{ $item->id }}">{{ $item->aktif }}</td>
+                                                        <td class="main_aktif_{{ $item->id }}">{{ $item->set_active }}</td>
+                                                        <td class="main_hirarki_{{ $item->id }}"><input type="number" min="0" name="main_hirarki" id="main_hirarki" class="form-control form-control-sm text-center main_hirarki_{{ $item->id }}" data-id="{{ $item->id }}" value="{{ $item->hirarki }}"></td>
                                                         <td class="text-center">
                                                             <div class="btn-group">
                                                                 <a
@@ -536,6 +538,27 @@
                 info: false
             });
         });
+
+        // main hirarki
+        $(document).on('change', '#main_hirarki', function () {
+            let id = $('#main_hirarki').attr('data-id');
+            let hirarki = $('.main_hirarki_' + id).val();
+            alert(hirarki);
+
+            // let formData = {
+            //     id: id,
+            //     hirarki: $('.main_hirarki_' + id).val(),
+            //     _token: CSRF_TOKEN
+            // }
+            // $.ajax({
+            //     url: "{{ URL::route('nav.main_hirarki') }}",
+            //     type: "POST",
+            //     data: formData,
+            //     success: function (response) {
+            //         console.log(response);
+            //     }
+            // })
+        })
 
         // main create
         $('#main-button-create').on('click', function() {

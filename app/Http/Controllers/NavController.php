@@ -170,4 +170,15 @@ class NavController extends Controller
             'status' => 'Data berhasil dihapus'
         ]);
     }
+
+    public function mainHirarki(Request $request)
+    {
+        $nav_main = NavMain::find($request->id);
+        $nav_main->hirarki = $request->hirarki;
+        $nav_main->save();
+
+        return response()->json([
+            'status' => $request->all()
+        ]);
+    }
 }

@@ -18,12 +18,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pelanggan</h1>
+                    <h1>Estimasi Biaya</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Pelanggan</li>
+                        <li class="breadcrumb-item active">Estimasi Biaya</li>
                     </ol>
                 </div>
             </div>
@@ -49,21 +49,27 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center text-indigo">No</th>
-                                        <th class="text-center text-indigo">Nama Pelanggan</th>
-                                        <th class="text-center text-indigo">Telepon</th>
-                                        <th class="text-center text-indigo">Email</th>
-                                        <th class="text-center text-indigo">Alamat</th>
+                                        <th class="text-center text-indigo">Kategori</th>
+                                        <th class="text-center text-indigo">Antar & Jemput</th>
+                                        <th class="text-center text-indigo">Jasa</th>
+                                        <th class="text-center text-indigo">Administrasi</th>
+                                        <th class="text-center text-indigo">BPKB</th>
+                                        <th class="text-center text-indigo">STNK</th>
+                                        <th class="text-center text-indigo">TNKB</th>
                                         <th class="text-center text-indigo">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pelanggans as $key => $item)
+                                    @foreach ($estimasi_biayas as $key => $item)
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td class="text-center">{{ $item->telepon }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->alamat }}</td>
+                                            <td>{{ $item->kategori->nama }}</td>
+                                            <td>{{ rupiah($item->antar + $item->jemput) }}</td>
+                                            <td>{{ rupiah($item->jasa) }}</td>
+                                            <td>{{ rupiah($item->administrasi) }}</td>
+                                            <td>{{ rupiah($item->bpkb) }}</td>
+                                            <td>{{ rupiah($item->stnk) }}</td>
+                                            <td>{{ rupiah($item->tnkb) }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -104,11 +110,11 @@
 
 {{-- create & update --}}
 <div class="modal fade modal-form" id="modal-default">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <form id="form" class="form-create">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Data Pelanggan</h4>
+                    <h4 class="modal-title">Tambah Data Biaya</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -118,21 +124,40 @@
                     {{-- id --}}
                     <input type="hidden" name="id" id="id">
 
-                    <div class="mb-3">
-                        <label for="nama" class="form-label">Nama Pelanggan</label>
-                        <input type="text" class="form-control form-control-sm" id="nama" name="nama" maxlength="30" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telepon" class="form-label">Telepon</label>
-                        <input type="text" class="form-control form-control-sm" id="telepon" name="telepon" maxlength="15" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control form-control-sm" id="email" name="email" maxlength="50" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control"></textarea>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="kategori_id" class="form-label">Kategori</label>
+                            <select name="kategori_id" id="kategori_id" class="form-control" required>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="antar" class="form-label">Biaya Antar</label>
+                            <input type="text" class="form-control form-control-sm" id="antar" name="antar" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="jemput" class="form-label">Biaya Jemput</label>
+                            <input type="text" class="form-control form-control-sm" id="jemput" name="jemput" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="jasa" class="form-label">Biaya Jasa</label>
+                            <input type="text" class="form-control form-control-sm" id="jasa" name="jasa" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="administrasi" class="form-label">Biaya Administrasi</label>
+                            <input type="text" class="form-control form-control-sm" id="administrasi" name="administrasi" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="bpkb" class="form-label">Biaya BPKB</label>
+                            <input type="text" class="form-control form-control-sm" id="bpkb" name="bpkb" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="stnk" class="form-label">Biaya STNK</label>
+                            <input type="text" class="form-control form-control-sm" id="stnk" name="stnk" required>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-12">
+                            <label for="tnkb" class="form-label">Biaya TNKB</label>
+                            <input type="text" class="form-control form-control-sm" id="tnkb" name="tnkb" required>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -210,12 +235,60 @@ $(document).ready(function () {
         timer: 3000
     });
 
+    // create
     $('#btn-create').on('click', function() {
-        $('.modal-form').modal('show');
+        $.ajax({
+            url: "{{ URL::route('estimasi_biaya.create') }}",
+            type: 'get',
+            success: function (response) {
+                let val_kategori = "<option value=\"\">--Pilih Kategori--</option>";
+                $.each(response.kategoris, function (index, value) {
+                    val_kategori += "<option value=\"" + value.id + "\">" + value.nama + "</option>";
+                })
+                $('#kategori_id').append(val_kategori);
+
+                $('.modal-form').modal('show');
+            }
+        })
     });
 
     $(document).on('shown.bs.modal', '.modal-form', function() {
         $('#nama').focus();
+
+        var antar = document.getElementById("antar");
+        antar.addEventListener("keyup", function(e) {
+            antar.value = formatRupiah(this.value, "");
+        });
+
+        var jemput = document.getElementById("jemput");
+        jemput.addEventListener("keyup", function(e) {
+            jemput.value = formatRupiah(this.value, "");
+        });
+
+        var jasa = document.getElementById("jasa");
+        jasa.addEventListener("keyup", function(e) {
+            jasa.value = formatRupiah(this.value, "");
+        });
+
+        var administrasi = document.getElementById("administrasi");
+        administrasi.addEventListener("keyup", function(e) {
+            administrasi.value = formatRupiah(this.value, "");
+        });
+
+        var bpkb = document.getElementById("bpkb");
+        bpkb.addEventListener("keyup", function(e) {
+            bpkb.value = formatRupiah(this.value, "");
+        });
+
+        var stnk = document.getElementById("stnk");
+        stnk.addEventListener("keyup", function(e) {
+            stnk.value = formatRupiah(this.value, "");
+        });
+
+        var tnkb = document.getElementById("tnkb");
+        tnkb.addEventListener("keyup", function(e) {
+            tnkb.value = formatRupiah(this.value, "");
+        });
     });
 
     $(document).on('submit', '.form-create', function (e) {
@@ -224,7 +297,7 @@ $(document).ready(function () {
         var formData = new FormData($('#form')[0]);
 
         $.ajax({
-            url: "{{ URL::route('pelanggan.store') }}",
+            url: "{{ URL::route('estimasi_biaya.store') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -247,7 +320,7 @@ $(document).ready(function () {
                 var errorMessage = xhr.status + ': ' + error
 
                 Toast.fire({
-                    icon: 'danger',
+                    icon: 'error',
                     title: 'Error - ' + errorMessage
                 });
             }
@@ -259,9 +332,10 @@ $(document).ready(function () {
         e.preventDefault();
         $('.modal-title').empty();
         $('.modal-btn').empty();
+        $('#kategori_id').empty();
 
         var id = $(this).attr('data-id');
-        var url = '{{ route("pelanggan.edit", ":id") }}';
+        var url = '{{ route("estimasi_biaya.edit", ":id") }}';
         url = url.replace(':id', id);
 
         var formData = {
@@ -275,14 +349,27 @@ $(document).ready(function () {
             success: function (response) {
                 $('#form').removeClass('form-create');
                 $('#form').addClass('form-edit');
-                $('.modal-title').append("Ubah Data Pelanggan")
+                $('.modal-title').append("Ubah Data Biaya")
                 $('.modal-btn').append("Perbaharui");
 
-                $('#id').val(response.pelanggan.id);
-                $('#nama').val(response.pelanggan.nama);
-                $('#telepon').val(response.pelanggan.telepon);
-                $('#email').val(response.pelanggan.email);
-                $('#alamat').val(response.pelanggan.alamat);
+                $('#id').val(response.estimasi_biaya.id);
+                $('#antar').val(format_rupiah(response.estimasi_biaya.antar));
+                $('#jemput').val(format_rupiah(response.estimasi_biaya.jemput));
+                $('#jasa').val(format_rupiah(response.estimasi_biaya.jasa));
+                $('#administrasi').val(format_rupiah(response.estimasi_biaya.administrasi));
+                $('#bpkb').val(format_rupiah(response.estimasi_biaya.bpkb));
+                $('#stnk').val(format_rupiah(response.estimasi_biaya.stnk));
+                $('#tnkb').val(format_rupiah(response.estimasi_biaya.tnkb));
+
+                let val_kategori = "<option value=\"\">--Pilih Kategori--</option>";
+                $.each(response.kategoris, function (index, value) {
+                    val_kategori += "<option value=\"" + value.id + "\"";
+                    if (value.id == response.estimasi_biaya.kategori_id) {
+                        val_kategori += " selected";
+                    }
+                    val_kategori += ">" + value.nama + "</option>";
+                })
+                $('#kategori_id').append(val_kategori);
 
                 $('.modal-form').modal('show');
             }
@@ -295,7 +382,7 @@ $(document).ready(function () {
         var formData = new FormData($('#form')[0]);
 
         $.ajax({
-            url: "{{ URL::route('pelanggan.update') }}",
+            url: "{{ URL::route('estimasi_biaya.update') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -330,7 +417,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var id = $(this).attr('data-id');
-        var url = '{{ route("pelanggan.delete_btn", ":id") }}';
+        var url = '{{ route("estimasi_biaya.delete_btn", ":id") }}';
         url = url.replace(':id', id);
 
         var formData = {
@@ -356,7 +443,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: '{{ URL::route('pelanggan.delete') }}',
+            url: "{{ URL::route('estimasi_biaya.delete') }}",
             type: 'POST',
             data: formData,
             beforeSend: function () {

@@ -160,11 +160,26 @@
                                             <i class="fas fa-angle-right nav-icon"></i><p>Jabatan</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('kategori.index') }}" class="nav-link {{ request()->is('master/kategori') ? 'active' : '' }}">
+                                            <i class="fas fa-angle-right nav-icon"></i><p>Kategori</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('estimasi_biaya.index') }}" class="nav-link {{ request()->is('master/estimasi_biaya') ? 'active' : '' }}">
+                                            <i class="fas fa-angle-right nav-icon"></i><p>Estimas Biaya</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('karyawan.index') }}" class="nav-link {{ request()->is(['karyawan', 'karyawan/*']) ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user-tie text-center mr-2" style="width: 30px;"></i><p>Karyawan</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('pelanggan.index') }}" class="nav-link {{ request()->is(['pelanggan', 'pelanggan/*']) ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user text-center mr-2" style="width: 30px;"></i><p>Pelanggan</p>
                                 </a>
                             </li>
                         @else
@@ -181,7 +196,7 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Abata</a>.</strong>
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">BiroJasa</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 3.1.0
@@ -203,6 +218,39 @@
     <script src="{{ asset('public/themes/dist/js/adminlte.js') }}"></script>
 
     <script>
+        function format_rupiah(bilangan) {
+            var	number_string = bilangan.toString(),
+                split	= number_string.split(','),
+                sisa 	= split[0].length % 3,
+                rupiah 	= split[0].substr(0, sisa),
+                ribuan 	= split[0].substr(sisa).match(/\d{1,3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+            return rupiah;
+        }
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, "").toString(),
+                split = number_string.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            return prefix == undefined ? rupiah : rupiah ? "" + rupiah : "";
+        }
+
         function tanggalIndo(date) {
             var date = new Date(date);
             var tahun = date.getFullYear();
