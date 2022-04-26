@@ -6,6 +6,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\NavController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -103,4 +104,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pelanggan/update', [PelangganController::class, 'update'])->name('pelanggan.update');
     Route::get('pelanggan/{id}/delete_btn', [PelangganController::class, 'deleteBtn'])->name('pelanggan.delete_btn');
     Route::post('pelanggan/delete', [PelangganController::class, 'delete'])->name('pelanggan.delete');
+
+    // pesanan
+    Route::get('pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+    Route::get('pesanan/create', [PesananController::class, 'create'])->name('pesanan.create');
+    Route::post('pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
+    Route::get('pesanan/{id}/show', [PesananController::class, 'show'])->name('pesanan.show');
+    Route::get('pesanan/{id}/edit', [PesananController::class, 'edit'])->name('pesanan.edit');
+    Route::post('pesanan/update', [PesananController::class, 'update'])->name('pesanan.update');
+    Route::get('pesanan/{id}/delete_btn', [PesananController::class, 'deleteBtn'])->name('pesanan.delete_btn');
+    Route::post('pesanan/delete', [PesananController::class, 'delete'])->name('pesanan.delete');
+    Route::get('pesanan/{id}/tambah', [PesananController::class, 'tambah'])->name('pesanan.tambah');
 });

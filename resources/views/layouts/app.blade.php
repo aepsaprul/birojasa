@@ -182,6 +182,11 @@
                                     <i class="nav-icon fas fa-user text-center mr-2" style="width: 30px;"></i><p>Pelanggan</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('pesanan.index') }}" class="nav-link {{ request()->is(['pesanan', 'pesanan/*']) ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-credit-card text-center mr-2" style="width: 30px;"></i><p>Pesanan</p>
+                                </a>
+                            </li>
                         @else
 
                         @endif
