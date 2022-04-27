@@ -39,7 +39,7 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 @foreach ($kategoris as $item)
-                                    <a href="{{ route('pesanan.tambah', [$item->id]) }}" id="btn-create" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
+                                    <a href="{{ route('pesanan.create', [$item->id]) }}" id="btn-create" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
                                         <i class="fas fa-plus"></i> {{ $item->nama }}
                                     </a>
                                 @endforeach
@@ -141,7 +141,7 @@
                     <div id="data_form_edit" class="row">
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer">
                     <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
                         <span class="spinner-grow spinner-grow-sm"></span>
                         Loading...
@@ -153,6 +153,32 @@
             </form>
         </div>
     </div>
+</div>
+
+{{-- modal delete --}}
+<div class="modal fade modal-delete" id="modal-default">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form-delete">
+                <input type="hidden" id="delete_id" name="delete_id">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yakin akan dihapus?</h5>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
+                    <button class="btn btn-primary btn-sm btn-delete-spinner" disabled style="width: 130px; display: none;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-delete-yes text-center" style="width: 130px;">
+                        Ya
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 
 @endsection
@@ -293,7 +319,10 @@ $(document).ready(function () {
                 let val_form_edit = "" +
 
                 // id
-                "<input type=\"hidden\" name=\"id\" id=\"id\">" +
+                "<input type=\"hidden\" name=\"id\" id=\"id\" value=\"" + response.pesanan.id + "\">" +
+
+                // kategori id
+                "<input type=\"hidden\" name=\"kategori_id\" id=\"kategori_id\" value=\"" + response.pesanan.kategori_id + "\">" +
 
                 "<div class=\"col-lg-4 col-md-4 col-12 mb-2\">" +
                     "<label for=\"pelanggan_id\" class=\"font-weight-normal\">Nama Pelanggan</label>" +
@@ -302,7 +331,7 @@ $(document).ready(function () {
                         "<option value=\"tambah_pelanggan_baru\" id=\"tambah_pelanggan_baru\" class=\"font-weight-bold\">Tambah Baru</option>";
 
                         $.each(response.pelanggans, function (index, value) {
-                            val_form_edit += "<option value=\"" + value.id + "}\"";
+                            val_form_edit += "<option value=\"" + value.id + "\"";
                             if (value.id == response.pesanan.pelanggan_id) {
                                 val_form_edit += " selected";
                             }
@@ -407,7 +436,7 @@ $(document).ready(function () {
         var formData = new FormData($('#form')[0]);
 
         $.ajax({
-            url: "{{ URL::route('pelanggan.update') }}",
+            url: "{{ URL::route('pesanan.update') }}",
             type: 'POST',
             data: formData,
             contentType: false,
@@ -468,7 +497,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: '{{ URL::route('pelanggan.delete') }}',
+            url: "{{ URL::route('pesanan.delete') }}",
             type: 'POST',
             data: formData,
             beforeSend: function () {

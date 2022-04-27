@@ -116,7 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // pesanan
     Route::get('pesanan', [PesananController::class, 'index'])->name('pesanan.index');
-    Route::get('pesanan/create', [PesananController::class, 'create'])->name('pesanan.create');
+    Route::get('pesanan/{id}/create', [PesananController::class, 'create'])->name('pesanan.create');
     Route::post('pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
     Route::get('pesanan/{id}/show', [PesananController::class, 'show'])->name('pesanan.show');
     Route::get('pesanan/{id}/edit', [PesananController::class, 'edit'])->name('pesanan.edit');
@@ -125,6 +125,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pesanan/delete', [PesananController::class, 'delete'])->name('pesanan.delete');
     Route::post('pesanan/pelanggan_store', [PesananController::class, 'pelangganStore'])->name('pesanan.pelanggan_store');
     Route::post('pesanan/kota_store', [PesananController::class, 'kotaStore'])->name('pesanan.kota_store');
-    Route::get('pesanan/{id}/tambah', [PesananController::class, 'tambah'])->name('pesanan.tambah');
-    Route::post('pesanan/tambah_simpan', [PesananController::class, 'tambahSimpan'])->name('pesanan.tambah_simpan');
 });

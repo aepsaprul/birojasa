@@ -18,21 +18,33 @@ class PesananController extends Controller
         return view('pages.pesanan.index', ['pesanans' => $pesanan, 'kategoris' => $kategori]);
     }
 
-    public function create()
+    public function create($id)
     {
-        $kategori = Kategori::get();
+        $kategori = Kategori::find($id);
         $pelanggan = Pelanggan::get();
+        $kota = Kota::get();
 
-        return view('pages.pesanan.create', ['kategori' => $kategori, 'pelanggan' => $pelanggan]);
+        return view('pages.pesanan.create', [
+            'kategori' => $kategori,
+            'pelanggans' => $pelanggan,
+            'kotas' => $kota
+        ]);
     }
 
     public function store(Request $request)
     {
         $pesanan = new Pesanan;
-        $pesanan->nama = $request->nama;
-        $pesanan->telepon = $request->telepon;
-        $pesanan->email = $request->email;
-        $pesanan->alamat = $request->alamat;
+        $pesanan->kategori_id = $request->kategori_id;
+        $pesanan->pelanggan_id = $request->pelanggan_id;
+        $pesanan->pemilik = $request->pemilik;
+        $pesanan->jenis = $request->jenis;
+        $pesanan->tahun = $request->tahun;
+        $pesanan->plat_nomor = $request->plat_nomor;
+        $pesanan->pkb_berlaku = $request->pkb_berlaku;
+        $pesanan->pkb_nominal = $request->pkb_nominal;
+        $pesanan->swdkllj = $request->swdkllj;
+        $pesanan->samsat_asal = $request->samsat_asal;
+        $pesanan->samsat_tujuan = $request->samsat_tujuan;
         $pesanan->save();
 
         return response()->json([
@@ -67,10 +79,17 @@ class PesananController extends Controller
     public function update(Request $request)
     {
         $pesanan = Pesanan::find($request->id);
-        $pesanan->nama = $request->nama;
-        $pesanan->telepon = $request->telepon;
-        $pesanan->email = $request->email;
-        $pesanan->alamat = $request->alamat;
+        $pesanan->kategori_id = $request->kategori_id;
+        $pesanan->pelanggan_id = $request->pelanggan_id;
+        $pesanan->pemilik = $request->pemilik;
+        $pesanan->jenis = $request->jenis;
+        $pesanan->tahun = $request->tahun;
+        $pesanan->plat_nomor = $request->plat_nomor;
+        $pesanan->pkb_berlaku = $request->pkb_berlaku;
+        $pesanan->pkb_nominal = $request->pkb_nominal;
+        $pesanan->swdkllj = $request->swdkllj;
+        $pesanan->samsat_asal = $request->samsat_asal;
+        $pesanan->samsat_tujuan = $request->samsat_tujuan;
         $pesanan->save();
 
         return response()->json([
@@ -116,40 +135,6 @@ class PesananController extends Controller
         $kota = new Kota;
         $kota->nama = $request->nama;
         $kota->save();
-
-        return response()->json([
-            'status' => 200
-        ]);
-    }
-
-    public function tambah($id)
-    {
-        $kategori = Kategori::find($id);
-        $pelanggan = Pelanggan::get();
-        $kota = Kota::get();
-
-        return view('pages.pesanan.create', [
-            'kategori' => $kategori,
-            'pelanggans' => $pelanggan,
-            'kotas' => $kota
-        ]);
-    }
-
-    public function tambahSimpan(Request $request)
-    {
-        $pesanan = new Pesanan;
-        $pesanan->kategori_id = $request->kategori_id;
-        $pesanan->pelanggan_id = $request->pelanggan_id;
-        $pesanan->pemilik = $request->pemilik;
-        $pesanan->jenis = $request->jenis;
-        $pesanan->tahun = $request->tahun;
-        $pesanan->plat_nomor = $request->plat_nomor;
-        $pesanan->pkb_berlaku = $request->pkb_berlaku;
-        $pesanan->pkb_nominal = $request->pkb_nominal;
-        $pesanan->swdkllj = $request->swdkllj;
-        $pesanan->samsat_asal = $request->samsat_asal;
-        $pesanan->samsat_tujuan = $request->samsat_tujuan;
-        $pesanan->save();
 
         return response()->json([
             'status' => 200

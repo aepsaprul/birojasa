@@ -348,7 +348,7 @@
             let formData = new FormData($('#form_create')[0]);
 
             $.ajax({
-                url: "{{ URL::route('pesanan.tambah_simpan') }}",
+                url: "{{ URL::route('pesanan.store') }}",
                 type: 'POST',
                 data: formData,
                 contentType: false,
