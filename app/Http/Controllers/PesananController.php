@@ -40,12 +40,27 @@ class PesananController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function show($id)
     {
-        $pesanan = Pesanan::find($id);
+    $pesanan = Pesanan::with(['kategori', 'pelanggan', 'samsatAsal', 'samsatTujuan'])->find($id);
 
         return response()->json([
             'pesanan' => $pesanan
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $pesanan = Pesanan::with('kategori', 'pelanggan', 'samsatAsal', 'samsatTujuan')->find($id);
+        $kategori = Kategori::get();
+        $pelanggan = Pelanggan::get();
+        $kota = Kota::get();
+
+        return response()->json([
+            'pesanan' => $pesanan,
+            'kategoris' => $kategori,
+            'pelanggans' => $pelanggan,
+            'kotas' => $kota
         ]);
     }
 

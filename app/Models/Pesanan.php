@@ -16,4 +16,12 @@ class Pesanan extends Model
     public function pelanggan() {
         return $this->belongsTo(Pelanggan::class, 'pelanggan_id', 'id');
     }
+
+    public function samsatAsal() {
+        return $this->belongsTo(Kota::class, 'samsat_asal', 'id');
+    }
+
+    public function samsatTujuan() {
+        return $this->belongsTo(Kota::class, 'samsat_tujuan', 'id');
+    }
 }

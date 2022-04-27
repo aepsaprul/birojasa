@@ -364,7 +364,7 @@
                     });
 
                     setTimeout( () => {
-                        window.location.reload(1);
+                        window.location.href="{{ URL::route('pesanan.index') }}";
                     }, 1000);
                 },
                 error: function(xhr, status, error) {
