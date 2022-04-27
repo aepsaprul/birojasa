@@ -170,6 +170,11 @@
                                             <i class="fas fa-angle-right nav-icon"></i><p>Estimas Biaya</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('kota.index') }}" class="nav-link {{ request()->is('master/kota') ? 'active' : '' }}">
+                                            <i class="fas fa-angle-right nav-icon"></i><p>Kota</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">

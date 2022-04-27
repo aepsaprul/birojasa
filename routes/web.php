@@ -4,6 +4,7 @@ use App\Http\Controllers\EstimasBiayaController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KotaController;
 use App\Http\Controllers\NavController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
@@ -84,6 +85,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('master/estimasi_biaya/{id}/delete_btn', [EstimasBiayaController::class, 'deleteBtn'])->name('estimasi_biaya.delete_btn');
         Route::post('master/estimasi_biaya/delete', [EstimasBiayaController::class, 'delete'])->name('estimasi_biaya.delete');
 
+        // kota
+        Route::get('master/kota', [KotaController::class, 'index'])->name('kota.index');
+        Route::post('master/kota/store', [KotaController::class, 'store'])->name('kota.store');
+        Route::get('master/kota/{id}/edit', [KotaController::class, 'edit'])->name('kota.edit');
+        Route::post('master/kota/update', [KotaController::class, 'update'])->name('kota.update');
+        Route::get('master/kota/{id}/delete_btn', [KotaController::class, 'deleteBtn'])->name('kota.delete_btn');
+        Route::post('master/kota/delete', [KotaController::class, 'delete'])->name('kota.delete');
+
     // karyawan
     Route::get('karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
     Route::get('karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
@@ -114,5 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pesanan/update', [PesananController::class, 'update'])->name('pesanan.update');
     Route::get('pesanan/{id}/delete_btn', [PesananController::class, 'deleteBtn'])->name('pesanan.delete_btn');
     Route::post('pesanan/delete', [PesananController::class, 'delete'])->name('pesanan.delete');
+    Route::post('pesanan/pelanggan_store', [PesananController::class, 'pelangganStore'])->name('pesanan.pelanggan_store');
+    Route::post('pesanan/kota_store', [PesananController::class, 'kotaStore'])->name('pesanan.kota_store');
     Route::get('pesanan/{id}/tambah', [PesananController::class, 'tambah'])->name('pesanan.tambah');
+    Route::post('pesanan/tambah_simpan', [PesananController::class, 'tambahSimpan'])->name('pesanan.tambah_simpan');
 });

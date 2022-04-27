@@ -31,7 +31,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <form action="">
+                        <form id="form_create">
+
+                            {{-- kategori id --}}
+                            <input type="hidden" name="kategori_id" id="kategori_id" value="{{ $kategori->id }}">
+
                             <div class="card-header">
                                 <h3 class="card-title font-weight-bold">{{ $kategori->nama }}</h3>
                                 <div class="card-tools">
@@ -44,6 +48,7 @@
                                         <label for="pelanggan_id" class="font-weight-normal">Nama Pelanggan</label>
                                         <select name="pelanggan_id" id="pelanggan_id" class="form-control">
                                             <option value="">--Pilih Pelanggan--</option>
+                                            <option value="tambah_pelanggan_baru" id="tambah_pelanggan_baru" class="font-weight-bold">Tambah Baru</option>
                                             @foreach ($pelanggans as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                             @endforeach
@@ -82,7 +87,7 @@
                                     @if ($kategori->id != 6)
                                         <div class="col-lg-4 col-md-4 col-12 mb-2">
                                             <label for="pkb_berlaku" class="font-weight-normal">PKB Berlaku s/d</label>
-                                            <input type="text" name="pkb_berlaku" id="pkb_berlaku" class="form-control">
+                                            <input type="date" name="pkb_berlaku" id="pkb_berlaku" class="form-control">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-12 mb-2">
                                             <label for="pkb_nominal" class="font-weight-normal">Nominal PKB Terakhir</label>
@@ -97,17 +102,35 @@
                                     @if ($kategori->id == 3 || $kategori->id == 4 || $kategori->id == 5)
                                         <div class="col-lg-4 col-md-4 col-12 mb-2">
                                             <label for="samsat_asal" class="font-weight-normal">Samsat Asal</label>
-                                            <input type="text" name="samsat_asal" id="samsat_asal" class="form-control">
+                                            <select name="samsat_asal" id="samsat_asal" class="form-control">
+                                                <option value="">--Pilih Samsat Asal--</option>
+                                                <option value="tambah_samsat_asal" id="tambah_samsat_asal" class="font-weight-bold">Tambah Baru</option>
+                                                @foreach ($kotas as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-12 mb-2">
                                             <label for="samsat_tujuan" class="font-weight-normal">Samsat Tujuan</label>
-                                            <input type="text" name="samsat_tujuan" id="samsat_tujuan" class="form-control">
+                                            <select name="samsat_tujuan" id="samsat_tujuan" class="form-control">
+                                                <option value="">--Pilih Samsat Tujuan--</option>
+                                                <option value="tambah_samsat_tujuan" id="tambah_samsat_tujuan" class="font-weight-bold">Tambah Baru</option>
+                                                @foreach ($kotas as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     @endif
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-sm btn-primary px-4"><i class="fas fa-save"></i> Simpan</button>
+                                <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
+                                    <span class="spinner-grow spinner-grow-sm"></span>
+                                    Loading...
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
+                                    <i class="fas fa-save"></i> <span class="modal-btn"> Simpan </span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -117,13 +140,243 @@
     </section>
 </div>
 
+{{-- create pelanggan --}}
+<div class="modal fade modal-form-create-pelanggan" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="form_pelanggan" class="form-create-pelanggan">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Data Pelanggan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" name="id" id="id">
+
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama Pelanggan</label>
+                        <input type="text" class="form-control form-control-sm" id="nama" name="nama" maxlength="30" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telepon" class="form-label">Telepon</label>
+                        <input type="text" class="form-control form-control-sm" id="telepon" name="telepon" maxlength="15" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control form-control-sm" id="email" name="email" maxlength="50" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alamat" class="form-label">Alamat</label>
+                        <textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn"> Simpan </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- create kota --}}
+<div class="modal fade modal-form-create-kota" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="form_kota" class="form-create-kota">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Data Kota</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" name="id" id="id">
+
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama Kota</label>
+                        <input type="text" class="form-control form-control-sm" id="nama" name="nama" maxlength="30" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn"> Simpan </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
 
 <script>
     $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        // create pelanggan
+        $(document).on('change', '#pelanggan_id', function (e) {
+            if ($('#pelanggan_id').val() == "tambah_pelanggan_baru") {
+                $('.modal-form-create-pelanggan').modal('show');
+            }
+        })
+
+        $(document).on('shown.bs.modal', '.modal-form-create-pelanggan', function() {
+            $('#nama').focus();
+        });
+
+        $(document).on('submit', '.form-create-pelanggan', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData($('#form_pelanggan')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('pesanan.pelanggan_store') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.btn-spinner').removeClass('d-none');
+                    $('.btn-save').addClass('d-none');
+                },
+                success: function (response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil ditambah'
+                    });
+
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + error
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error - ' + errorMessage
+                    });
+                }
+            });
+        });
+
+        // create kota
+        $(document).on('change', '#samsat_asal', function (e) {
+            if ($('#samsat_asal').val() == "tambah_samsat_asal") {
+                $('.modal-form-create-kota').modal('show');
+            }
+        })
+
+        $(document).on('change', '#samsat_tujuan', function (e) {
+            if ($('#samsat_tujuan').val() == "tambah_samsat_tujuan") {
+                $('.modal-form-create-kota').modal('show');
+            }
+        })
+
+        $(document).on('shown.bs.modal', '.modal-form-create-kota', function() {
+            $('#nama').focus();
+        });
+
+        $(document).on('submit', '.form-create-kota', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData($('#form_kota')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('pesanan.kota_store') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.btn-spinner').removeClass('d-none');
+                    $('.btn-save').addClass('d-none');
+                },
+                success: function (response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil ditambah'
+                    });
+
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + error
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error - ' + errorMessage
+                    });
+                }
+            });
+        });
+
+        // create form
+        $(document).on('submit', '#form_create', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData($('#form_create')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('pesanan.tambah_simpan') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('.btn-spinner').removeClass("d-none");
+                    $('.btn-save').addClass("d-none");
+                },
+                success: function (response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil diperbaharui'
+                    });
+
+                    setTimeout( () => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + error
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error - ' + errorMessage
+                    });
+                }
+            })
+        })
     });
 </script>
 
