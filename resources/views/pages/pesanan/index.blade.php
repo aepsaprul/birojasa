@@ -37,13 +37,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">
+                            <div class="d-flex justify-content-between">
                                 @foreach ($kategoris as $item)
                                     <a href="{{ route('pesanan.create', [$item->id]) }}" id="btn-create" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
                                         <i class="fas fa-plus"></i> {{ $item->nama }}
                                     </a>
                                 @endforeach
-                            </h3>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -54,6 +54,7 @@
                                         <th class="text-center text-indigo">Kategori</th>
                                         <th class="text-center text-indigo">Pelanggan</th>
                                         <th class="text-center text-indigo">Berlaku s/d</th>
+                                        <th class="text-center text-indigo">Status</th>
                                         <th class="text-center text-indigo">Aksi</th>
                                     </tr>
                                 </thead>
@@ -61,12 +62,43 @@
                                     @foreach ($pesanans as $key => $item)
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
-                                            <td><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->kategori->nama }}</a></td>
-                                            <td>{{ $item->pelanggan->nama }}</td>
+                                            <td>{{ $item->kategori->nama }}</td>
+                                            <td><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->pelanggan->nama }}</a></td>
                                             <td class="text-center">
                                                 @if ($item->pkb_berlaku)
                                                     {{ tgl_indo($item->pkb_berlaku) }}
                                                 @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($item->percentage > 100)
+                                                    @php
+                                                        $percent = 100;
+                                                    @endphp
+                                                @else
+                                                    @php
+                                                        $percent = $item->percentage
+                                                    @endphp
+                                                @endif
+                                                <div class="progress mb-2">
+                                                    <div
+                                                        class="progress-bar bg-info"
+                                                        role="progressbar"
+                                                        aria-valuenow="40"
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="100"
+                                                        style="width: {{ $percent }}%">
+                                                            <span class="">{{ $percent }}%</span>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary btn-xs btn-status-spinner-{{ $item->id }} d-none float-left" disabled style="width: 80px;">
+                                                    <span class="spinner-grow spinner-grow-sm"></span>
+                                                </button>
+                                                @if ($item->status == "done")
+                                                    <span class="float-left text-capitalize" style="text-decoration: underline;">{{ $item->status }}</span>
+                                                @else
+                                                    <button type="button" id="btn-status-{{ $item->id }}" class="btn btn-xs btn-warning btn-status mb-2 text-capitalize float-left" data-id="{{ $item->id }}" data-value="{{ $item->status }}" style="width: 80px;">{{ $item->status }}</button>
+                                                @endif
+                                                <a href="#" class="btn-detail-status float-right" style="text-decoration: underline;" data-id="{{ $item->id }}">Detail</a>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
@@ -119,6 +151,31 @@
                 </div>
                 <div class="modal-body">
                     <div id="data_form_detail" class="row">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- detail status --}}
+<div class="modal fade modal-form-detail-status" id="modal-default">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_detail_status" class="form-detail-status">
+                <div class="modal-header">
+                    <h4 class="modal-title">Status Pesanan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="data_form_detail_status">
+                        <div class="row">
+                            <div class="col-md-12 time_line">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -287,6 +344,79 @@ $(document).ready(function () {
                 $('#data_form_detail').append(val_detail);
 
                 $('.modal-form-detail').modal('show');
+            }
+        })
+    })
+
+    // detail status
+    $(document).on('click', '.btn-detail-status', function (e) {
+        e.preventDefault();
+        $('.time_line').empty();
+
+        var id = $(this).attr('data-id');
+        var url = '{{ route("pesanan.status_detail", ":id") }}';
+        url = url.replace(':id', id);
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function (response) {
+                let val_status = "<div class=\"timeline\">";
+                $.each(response.status_details, function (index, value) {
+                    val_status += "" +
+                        "<div>" +
+                            "<i class=\"fas fa-copy bg-green\"></i>" +
+                            "<div class=\"timeline-item\">" +
+                                "<span class=\"time\"><i class=\"fas fa-clock\"></i> " + tanggalIndo(value.created_at) + "</span>" +
+                                "<h3 class=\"timeline-header no-border\">" + value.keterangan + "</h3>" +
+                            "</div>" +
+                        "</div>";
+                })
+                val_status += "</div>";
+                $('.time_line').append(val_status);
+
+                $('.modal-form-detail-status').modal('show');
+            }
+        })
+    })
+
+    // status button
+    $(document).on('click', '.btn-status', function (e) {
+        e.preventDefault();
+
+        let id = $(this).attr('data-id');
+        let value = $(this).attr('data-value');
+
+        let formData = {
+            id: id,
+            value: value
+        }
+
+        $.ajax({
+            url: "{{ URL::route('pesanan.status') }}",
+            type: 'POST',
+            data: formData,
+            beforeSend: function() {
+                $('.btn-status-spinner-' + id).removeClass("d-none");
+                $('#btn-status-' + id).addClass("d-none");
+            },
+            success: function (response) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Data berhasil diperbaharui'
+                });
+
+                setTimeout( () => {
+                    window.location.reload(1);
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + error
+
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error - ' + errorMessage
+                });
             }
         })
     })

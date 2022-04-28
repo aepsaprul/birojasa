@@ -123,6 +123,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pesanan/update', [PesananController::class, 'update'])->name('pesanan.update');
     Route::get('pesanan/{id}/delete_btn', [PesananController::class, 'deleteBtn'])->name('pesanan.delete_btn');
     Route::post('pesanan/delete', [PesananController::class, 'delete'])->name('pesanan.delete');
+    Route::post('pesanan/status', [PesananController::class, 'status'])->name('pesanan.status');
+    Route::get('pesanan/{id}/status_detail', [PesananController::class, 'statusDetail'])->name('pesanan.status_detail');
+
     Route::post('pesanan/pelanggan_store', [PesananController::class, 'pelangganStore'])->name('pesanan.pelanggan_store');
     Route::post('pesanan/kota_store', [PesananController::class, 'kotaStore'])->name('pesanan.kota_store');
 });

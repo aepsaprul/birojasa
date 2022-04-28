@@ -6,7 +6,9 @@ use App\Models\Kategori;
 use App\Models\Kota;
 use App\Models\Pelanggan;
 use App\Models\Pesanan;
+use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PesananController extends Controller
 {
@@ -45,7 +47,15 @@ class PesananController extends Controller
         $pesanan->swdkllj = $request->swdkllj;
         $pesanan->samsat_asal = $request->samsat_asal;
         $pesanan->samsat_tujuan = $request->samsat_tujuan;
+        $pesanan->status = "jemput";
+        $pesanan->percentage = 0;
         $pesanan->save();
+
+        $status = new Status;
+        $status->pesanan_id = $pesanan->id;
+        $status->user_id = Auth::user()->id;
+        $status->keterangan = "Pesanan telah dibuat";
+        $status->save();
 
         return response()->json([
             'status' => 200
@@ -111,8 +121,69 @@ class PesananController extends Controller
         $pesanan = Pesanan::find($request->id);
         $pesanan->delete();
 
+        $status = Status::where('pesanan_id', $request->id);
+        $status->delete();
+
         return response()->json([
             'status' => 200
+        ]);
+    }
+
+    public function status(Request $request)
+    {
+
+        if ($request->value == "jemput") {
+            $status = "terima";
+            $keterangan = "Berkas sedang di ambil";
+            $percentage = 17;
+        } else if ($request->value == "terima") {
+            $status = "proses";
+            $keterangan = "Berkas sudah diterima";
+            $percentage = 34;
+        } else if ($request->value == "proses") {
+            $status = "selesai";
+            $keterangan = "Berkas sedang diproses di Samsat";
+            $percentage = 51;
+        } else if ($request->value == "selesai") {
+            $status = "antar";
+            $keterangan = "Berkas sudah selesai dari Samsat";
+            $percentage = 68;
+        } else if ($request->value == "antar") {
+            $status = "sampai";
+            $keterangan = "Berkas sedang diantar ke pelanggan";
+            $percentage = 85;
+        } else if ($request->value == "sampai") {
+            $status = "done";
+            $keterangan = "Berkasi sudah sampai ke tangan pelanggan";
+            $percentage = 100;
+        } else {
+            $status = "null";
+            $keterangan = "Selesai";
+            $percentage = 0;
+        }
+
+        $pesanan = Pesanan::find($request->id);
+        $pesanan->status = $status;
+        $pesanan->percentage = $percentage;
+        $pesanan->save();
+
+        $status_pesanan = new Status;
+        $status_pesanan->pesanan_id = $pesanan->id;
+        $status_pesanan->user_id = Auth::user()->id;
+        $status_pesanan->keterangan = $keterangan;
+        $status_pesanan->save();
+
+        return response()->json([
+            'status' => 200
+        ]);
+    }
+
+    public function statusDetail($id)
+    {
+        $status_detail = Status::where('pesanan_id', $id)->get();
+
+        return response()->json([
+            'status_details' => $status_detail
         ]);
     }
 

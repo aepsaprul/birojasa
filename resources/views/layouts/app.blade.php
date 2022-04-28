@@ -293,7 +293,7 @@
             case 10: bulan = "November"; break;
             case 11: bulan = "Desember"; break;
             }
-            var tampilTanggal = hari + ", " + tanggal + " " + bulan + " " + tahun;
+            var tampilTanggal = hari + ", " + tanggal + " " + bulan + " " + tahun + " " + jam + ":" + menit + ":" + detik;
             var tampilWaktu = "Jam: " + jam + ":" + menit + ":" + detik;
 
             return tampilTanggal;
