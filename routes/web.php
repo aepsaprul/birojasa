@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\EstimasBiayaController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KaryawanController;
@@ -36,6 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
     // profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('profile/store', [ProfileController::class, 'store'])->name('profile.store');
+
+    // ubah password
+    Route::get('change_password', [ChangePasswordController::class, 'index'])->name('change_password.index');
+    Route::post('change_password/store', [ChangePasswordController::class, 'store'])->name('change_password.store');
 
     // master
         Route::get('master/nav', [NavController::class, 'index'])->name('nav.index');
