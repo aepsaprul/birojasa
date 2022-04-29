@@ -45,7 +45,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="datatable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-center text-indigo">No</th>
@@ -193,9 +193,6 @@
 
 <script>
 
-$(function () {
-    $("#example1").DataTable();
-});
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
@@ -208,6 +205,10 @@ $(document).ready(function () {
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
+    });
+
+    $("#datatable").DataTable({
+        'responsive': true
     });
 
     $('#btn-create').on('click', function() {

@@ -37,9 +37,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between">
+                            <div style="overflow: auto;">
                                 @foreach ($kategoris as $item)
-                                    <a href="{{ route('pesanan.create', [$item->id]) }}" id="btn-create" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
+                                    <a href="{{ route('pesanan.create', [$item->id]) }}" id="btn-create" class="btn bg-gradient-primary btn-sm pl-3 pr-3 mb-2">
                                         <i class="fas fa-plus"></i> {{ $item->nama }}
                                     </a>
                                 @endforeach
@@ -47,7 +47,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="datatable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-center text-indigo">No</th>
@@ -258,9 +258,6 @@
 
 <script>
 
-$(function () {
-    $("#example1").DataTable();
-});
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
@@ -273,6 +270,10 @@ $(document).ready(function () {
         position: 'top-end',
         showConfirmButton: false,
         timer: 3000
+    });
+
+    $("#datatable").DataTable({
+        'responsive': true
     });
 
     // detail

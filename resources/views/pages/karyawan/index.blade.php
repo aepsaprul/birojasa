@@ -182,7 +182,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="text" id="email" name="email" class="form-control form-control-sm" maxlength="15" >
+                                <input type="text" id="email" name="email" class="form-control form-control-sm" maxlength="50" >
                                 <small id="error_email" class="form-text text-danger"></small>
                             </div>
                         </div>

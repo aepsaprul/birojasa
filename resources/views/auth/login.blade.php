@@ -94,11 +94,11 @@
 
                 <div class="mt-2">
                     {{-- <a href="#" style="font-size: 14px;">Lupa password</a> --}}
-                    @if (Route::has('password.request'))
+                    {{-- @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" style="font-size: 14px;">
                             {{ __('Lupa password?') }}
                         </a>
-                    @endif
+                    @endif --}}
                 </div>
                 <hr>
                 <div class="text-center mb-2 text-secondary" style="font-size: 14px;">©2022 All Rights Reserved - AdminLTE</div>
