@@ -76,7 +76,7 @@
                                                                 Navigasi utama kosong
                                                             @endif
                                                         </td>
-                                                        <td class="sub_aktif_{{ $item->id }}">{{ $item->aktif }}</td>
+                                                        <td class="sub_aktif_{{ $item->id }}">{{ $item->set_active }}</td>
                                                         <td class="text-center">
                                                             <div class="btn-group">
                                                                 <a
@@ -129,7 +129,7 @@
                                                         <td class="main_link_{{ $item->id }}">{{ $item->link }}</td>
                                                         <td class="main_icon_{{ $item->id }}">{{ $item->icon }}</td>
                                                         <td class="main_aktif_{{ $item->id }}">{{ $item->set_active }}</td>
-                                                        <td class="main_hirarki_{{ $item->id }}"><input type="number" min="0" name="main_hirarki" id="main_hirarki" class="form-control form-control-sm text-center main_hirarki_{{ $item->id }}" data-id="{{ $item->id }}" value="{{ $item->hirarki }}"></td>
+                                                        <td class="main_hirarki_{{ $item->id }}"><input type="number" min="0" name="main_hirarki_{{ $item->id }}" id="main_hirarki" class="form-control form-control-sm text-center main_hirarki" data-id="{{ $item->id }}" value="{{ $item->hirarki }}"></td>
                                                         <td class="text-center">
                                                             <div class="btn-group">
                                                                 <a
@@ -541,8 +541,8 @@
 
         // main hirarki
         $(document).on('change', '#main_hirarki', function () {
-            let id = $('#main_hirarki').attr('data-id');
-            let hirarki = $('.main_hirarki_' + id).val();
+            let id = $('.main_hirarki').attr('data-id');
+            let hirarki = $('#main_hirarki_' + id).val();
             alert(hirarki);
 
             // let formData = {

@@ -62,7 +62,7 @@ class NavController extends Controller
             'title' => $nav_main->title,
             'link' => $nav_main->link,
             'icon' => $nav_main->icon,
-            'aktif' => $nav_main->aktif
+            'aktif' => $nav_main->set_active
         ]);
     }
 
@@ -76,7 +76,7 @@ class NavController extends Controller
             'title' => $nav_sub->title,
             'link' => $nav_sub->link,
             'main_id' => $nav_sub->main_id,
-            'aktif' => $nav_sub->aktif,
+            'aktif' => $nav_sub->set_active,
             'nav_mains' => $nav_main
         ]);
     }
