@@ -51,7 +51,6 @@
                                         <th class="text-center text-indigo">Nama Karyawan</th>
                                         <th class="text-center text-indigo">Jabatan</th>
                                         <th class="text-center text-indigo">Email</th>
-                                        <th class="text-center text-indigo">Cabang</th>
                                         <th class="text-center text-indigo">Aksi</th>
                                     </tr>
                                 </thead>
@@ -59,18 +58,13 @@
                                     @foreach ($users as $key => $item)
                                     <tr>
                                         <td class="text-center">{{ $key + 1 }}</td>
-                                        <td>{{ $item->masterKaryawan->nama_lengkap }}</td>
+                                        <td>{{ $item->karyawan->nama_lengkap }}</td>
                                         <td>
-                                            @if ($item->masterKaryawan->masterJabatan)
-                                                {{ $item->masterKaryawan->masterJabatan->nama_jabatan }}
+                                            @if ($item->karyawan->jabatan)
+                                                {{ $item->karyawan->jabatan->nama }}
                                             @endif
                                         </td>
-                                        <td>{{ $item->masterKaryawan->email }}</td>
-                                        <td style="width: 150px;">
-                                            @if ($item->masterKaryawan->masterCabang)
-                                                {{ $item->masterKaryawan->masterCabang->nama_cabang }}
-                                            @endif
-                                        </td>
+                                        <td>{{ $item->karyawan->email }}</td>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <a
@@ -290,7 +284,7 @@
                     var value_karyawan = "<option value=\"0\">--Pilih Karyawan--</option>";
 
                     $.each(response.karyawans, function (index, item) {
-                        value_karyawan += "<option value=\"" + item.id + "\">" + item.nama_lengkap + " - " + item.master_cabang.nama_cabang + "</option>";
+                        value_karyawan += "<option value=\"" + item.id + "\">" + item.nama_lengkap + " - " + item.jabatan.nama + "</option>";
                     });
                     $('#create_karyawan_id').append(value_karyawan);
 

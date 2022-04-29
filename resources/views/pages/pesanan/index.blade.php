@@ -90,7 +90,7 @@
                                                             <span class="">{{ $percent }}%</span>
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-primary btn-xs btn-status-spinner-{{ $item->id }} d-none float-left" disabled style="width: 80px;">
+                                                <button class="btn btn-warning btn-xs btn-status-spinner-{{ $item->id }} d-none float-left" disabled style="width: 80px;">
                                                     <span class="spinner-grow spinner-grow-sm"></span>
                                                 </button>
                                                 @if ($item->status == "done")

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\NavAccess;
 use App\Models\NavSub;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -23,7 +25,8 @@ class UserController extends Controller
 
     public function create()
     {
-        $karyawan = Karyawan::where('status', 'aktif')
+        $karyawan = Karyawan::with('jabatan')
+            ->where('status', 'aktif')
             ->doesntHave('navAccess')
             ->get();
 
@@ -42,11 +45,17 @@ class UserController extends Controller
             $nav_access->main_id = $item->main_id;
             $nav_access->sub_id = $item->id;
             $nav_access->tampil = "n";
-            $nav_access->tambah = "n";
-            $nav_access->ubah = "n";
-            $nav_access->hapus = "n";
             $nav_access->save();
         }
+
+        $karyawan = Karyawan::find($request->karyawan_id);
+
+        $user = new User;
+        $user->name = $karyawan->nama_lengkap;
+        $user->email = $karyawan->email;
+        $user->password = Hash::make("12345678");
+        $user->karyawan_id = $karyawan->id;
+        $user->save();
 
         return response()->json([
             'status' => 'true'
@@ -61,6 +70,12 @@ class UserController extends Controller
         $nav_access_id = NavAccess::find($log_delete->id);
 
         $nav_access->delete();
+
+        $user = User::find($request->id);
+
+        if ($user) {
+            $user->delete();
+        }
 
         return response()->json([
             'status' => 'true'
@@ -78,11 +93,11 @@ class UserController extends Controller
             ->get();
 
         $karyawan_id = $id;
-        $sync = DB::table('hc_nav_subs')
-            ->select('hc_nav_subs.id AS nav_sub_id', 'hc_nav_subs.title AS title', 'hc_nav_subs.main_id AS nav_main')
-            ->leftJoin('hc_nav_accesses', function($join) use ($karyawan_id) {
-                $join->on('hc_nav_subs.id', '=', 'hc_nav_accesses.sub_id')
-                    ->where('hc_nav_accesses.user_id', '=', $karyawan_id);
+        $sync = DB::table('nav_subs')
+            ->select('nav_subs.id AS nav_sub_id', 'nav_subs.title AS title', 'nav_subs.main_id AS nav_main')
+            ->leftJoin('nav_accesses', function($join) use ($karyawan_id) {
+                $join->on('nav_subs.id', '=', 'nav_accesses.sub_id')
+                    ->where('nav_accesses.user_id', '=', $karyawan_id);
             })
             ->whereNull('user_id')
             ->get();
@@ -124,11 +139,11 @@ class UserController extends Controller
         $karyawan = Karyawan::where('id', $request->id)->first();
 
         $karyawan_id = $karyawan->id;
-        $sync = DB::table('hc_nav_subs')
-            ->select('hc_nav_subs.id AS nav_sub_id', 'hc_nav_subs.title AS title', 'hc_nav_subs.main_id AS nav_main')
-            ->leftJoin('hc_nav_accesses', function($join) use ($karyawan_id) {
-                $join->on('hc_nav_subs.id', '=', 'hc_nav_accesses.sub_id')
-                    ->where('hc_nav_accesses.user_id', '=', $karyawan_id);
+        $sync = DB::table('nav_subs')
+            ->select('nav_subs.id AS nav_sub_id', 'nav_subs.title AS title', 'nav_subs.main_id AS nav_main')
+            ->leftJoin('nav_accesses', function($join) use ($karyawan_id) {
+                $join->on('nav_subs.id', '=', 'nav_accesses.sub_id')
+                    ->where('nav_accesses.user_id', '=', $karyawan_id);
             })
             ->whereNull('user_id')
             ->get();
@@ -139,9 +154,6 @@ class UserController extends Controller
             $nav_access->main_id = $item->nav_main;
             $nav_access->sub_id = $item->nav_sub_id;
             $nav_access->tampil = "n";
-            $nav_access->tambah = "n";
-            $nav_access->ubah = "n";
-            $nav_access->hapus = "n";
             $nav_access->save();
         }
 

@@ -193,7 +193,32 @@
                                 </a>
                             </li>
                         @else
-
+                            @foreach ($current_nav_mains as $item)
+                                @if ($item->link == '#')
+                                    <li class="nav-item {{ request()->is(''.$item->set_active.'/*') ? 'menu-open' : '' }}">
+                                        <a href="#" class="nav-link {{ request()->is(''.$item->set_active.'/*') ? 'active' : '' }}">
+                                            <i class="nav-icon {{ $item->icon }} text-center mr-2" style="width: 30px;"></i> <p>{{ $item->title }}<i class="right fas fa-angle-left"></i></p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            @foreach ($current_menus as $item_menu)
+                                                @if ($item_menu->main_id == $item->id)
+                                                    <li class="nav-item">
+                                                        <a href="{{ route($item_menu->navSub->link) }}" class="nav-link {{ request()->is([''.$item_menu->navSub->set_active.'', ''.$item_menu->navSub->set_active.'/*']) ? 'active' : '' }}">
+                                                            <i class="fas fa-angle-right nav-icon"></i> <p>{{ $item_menu->navSub->title }}</p>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="nav-item">
+                                        <a href="{{ route($item->link) }}" class="nav-link {{ request()->is([''.$item->set_active.'', ''.$item->set_active.'/*']) ? 'active' : '' }}">
+                                            <i class="nav-icon {{ $item->icon }} text-center mr-2" style="width: 30px;"></i> <p>{{ $item->title }}</p>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endforeach
                         @endif
                     </ul>
                 </nav>
