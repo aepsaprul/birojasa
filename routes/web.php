@@ -8,6 +8,7 @@ use App\Http\Controllers\KotaController;
 use App\Http\Controllers\NavController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
+    // profile
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('profile/store', [ProfileController::class, 'store'])->name('profile.store');
 
     // master
         Route::get('master/nav', [NavController::class, 'index'])->name('nav.index');
